@@ -39,6 +39,35 @@ jobs:
     - name: Install dependencies
       run: poetry install
 
+    - name: Create test data folders (Mac and linux)
+      if: runner.os != 'Windows'
+      run: |
+        echo ${{ github.workspace }}
+        mkdir -p ${{ github.workspace }}/testdata ${{ github.workspace }}/testdata_output
+        echo "TESTINPUTPATH=${{ github.workspace }}/testdata" >> $GITHUB_ENV
+        echo "TESTOUTPUTPATH=${{ github.workspace }}/testdata_output" >> $GITHUB_ENV
+
+    - name: Create test data folders for Windows
+      if: runner.os == 'Windows'
+      run: |
+        echo ${{ github.workspace }}
+        mkdir -p ${{ github.workspace }}\testdata 
+        mkdir -p ${{ github.workspace }}\testdata_output
+        echo "TESTINPUTPATH=${{ github.workspace }}\testdata" >> $env:GITHUB_ENV
+        echo "TESTOUTPUTPATH=${{ github.workspace }}\testdata_output" >> $env:GITHUB_ENV
+
+    - name: Echo test data folders (Mac and linux)
+      if: runner.os != 'Windows'
+      run: |
+        echo $TESTINPUTPATH
+        echo $TESTOUTPUTPATH
+
+    - name: Echo test data folders for Windows
+      if: runner.os == 'Windows'
+      run: |
+        echo $env:TESTINPUTPATH
+        echo $env:TESTOUTPUTPATH
+    
     - name: Test with unittest
       run: |
         poetry run python -m unittest discover -s ./tests  -p 'test_*.py'
