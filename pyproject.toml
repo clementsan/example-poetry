@@ -9,7 +9,7 @@ packages = [{include = "example_poetry"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 numpy = "^1.26.4"
-
+nornir-shared = { git = "https://github.com/clementsan/nornir-shared.git", branch = "dev" }
 
 [build-system]
 requires = ["poetry-core"]
